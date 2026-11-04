@@ -14,7 +14,6 @@ if(config.links.tournify){
   tournifyLink.target='_blank';tournifyLink.rel='noopener noreferrer';
   tournifyLink.removeAttribute('aria-disabled');
   tournifyLink.removeAttribute('aria-describedby');
-  document.querySelector('#tournify-pending').hidden=true;
 }else{
   tournifyLink.removeAttribute('href');
   tournifyLink.addEventListener('click',event=>event.preventDefault());
@@ -127,3 +126,4 @@ fameGrid.addEventListener('pointermove',event=>{
 fameGrid.addEventListener('pointerout',event=>{const card=event.target.closest('.fame-card');if(card&&!card.contains(event.relatedTarget)){card.style.removeProperty('--tilt-x');card.style.removeProperty('--tilt-y');card.style.removeProperty('--glare-x');card.style.removeProperty('--glare-y');}});
 fameGrid.addEventListener('pointerleave',resetFameTilt);
 motion.addEventListener('change',resetFameTilt);
+
