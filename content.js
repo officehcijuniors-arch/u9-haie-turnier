@@ -32,3 +32,22 @@ Object.assign(window.TRANSLATIONS.de, {pausePhotos:'Pause',playPhotos:'Abspielen
 Object.assign(window.TRANSLATIONS.en, {pausePhotos:'Pause',playPhotos:'Play',pastMoments:'Moments from past tournaments',galleryLabel:'More than a game',galleryTitle:'These are our moments.',galleryIntro:'A look back at past tournaments.\nOn the ice and beyond.',closePhoto:'Close ×',previousPhoto:'Previous photo',nextPhoto:'Next photo',showPhoto:'Show photo',enlargePhoto:'Enlarge photo',photoRegion:'Tournament moments'});
 
 
+
+Object.assign(window.TRANSLATIONS.de, {
+teamFirstTitle:'Euer erster Schritt als Mannschaft',
+teamFirstCopy:'Bitte füllt als teilnehmende Mannschaft zuerst die Kader- und Essensabfrage aus. Eure Wünsche zu Turniertrikots, Mini-Sticks und Pucks könnt ihr ebenfalls im Teambereich angeben.',
+teamEntryButton:'Zum Teambereich',register:'Kader & Essen',
+teamsIntro:'Für alle teilnehmenden Mannschaften.\nBitte startet mit Kader und Essen.',
+registrationTitle:'Kader & Essen',
+registrationText:'Für alle teilnehmenden Mannschaften: Gebt euren Kader und den vorläufigen Mittagessenbedarf an. Vereinslogo und Mannschaftsfoto könnt ihr hier ebenfalls hochladen.',
+registrationLink:'Zur Kader- und Essensabfrage'
+});
+Object.assign(window.TRANSLATIONS.en, {
+teamFirstTitle:'Your team’s first step',
+teamFirstCopy:'All participating teams are asked to complete the roster and meal enquiry first. You can also submit your requirements for tournament jerseys, mini sticks and pucks in the team section.',
+teamEntryButton:'Go to team section',register:'Roster & meals',
+teamsIntro:'For all participating teams.\nPlease start with your roster and meals.',
+registrationTitle:'Roster & meals',
+registrationText:'For all participating teams: submit your roster and provisional lunch requirements. You can also upload your club logo and team photo here.',
+registrationLink:'Open roster & meal enquiry'
+});
