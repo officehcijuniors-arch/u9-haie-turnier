@@ -51,3 +51,6 @@ registrationTitle:'Roster & meals',
 registrationText:'For all participating teams: submit your roster and provisional lunch requirements. You can also upload your club logo and team photo here.',
 registrationLink:'Open roster & meal enquiry'
 });
+
+Object.assign(window.TRANSLATIONS.de,{followTitle:'Folgt den Haien',socialWebsite:'HCI Homepage',socialPhotos:'Fotoshop'});
+Object.assign(window.TRANSLATIONS.en,{followTitle:'Follow the Sharks',socialWebsite:'HCI website',socialPhotos:'Photo shop'});
