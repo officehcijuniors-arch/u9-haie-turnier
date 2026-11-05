@@ -68,3 +68,7 @@ body{background:#073b86}.header{background:#073b86;border-top:7px solid var(--re
 @media(max-width:760px){.follow-inner{padding-block:30px}.follow-links{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.follow-link{font-size:12px;padding:15px 12px;gap:9px;min-height:64px}.follow-link svg{width:21px;height:21px}.follow-heading{margin-bottom:21px}.follow-arrow{font-size:16px}}
 @media(max-width:360px){.follow-links{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.follow-link:hover{transform:none}}
+
+/* Direkte Routenplanung zur bestätigten Veranstaltungsadresse. */
+.venue{align-items:flex-start}.venue-pin{width:29px;height:34px;flex:none;margin-top:3px}.venue address{font-style:normal;font-size:12px;line-height:1.7;margin-top:5px}.venue address span{display:inline}.venue-actions{display:flex;align-items:center;gap:23px;flex-wrap:wrap;margin-top:22px}.venue-navigation{font-size:12px;min-height:48px;gap:24px}.venue-website{font-size:11px;font-weight:700;padding:10px 0;border-bottom:1px solid #ffffff55}.venue-website:hover{text-decoration:underline}
+@media(max-width:760px){.venue-actions{gap:17px;margin-top:20px}.venue address{font-size:12px}.venue-navigation{font-size:12px}.venue-website{font-size:11px}}

@@ -54,3 +54,6 @@ registrationLink:'Open roster & meal enquiry'
 
 Object.assign(window.TRANSLATIONS.de,{followTitle:'Folgt den Haien',socialWebsite:'HCI Homepage',socialPhotos:'Fotoshop'});
 Object.assign(window.TRANSLATIONS.en,{followTitle:'Follow the Sharks',socialWebsite:'HCI website',socialPhotos:'Photo shop'});
+
+Object.assign(window.TRANSLATIONS.de,{venueCountry:'Österreich',directionsLink:'Anreise & Navigation'});
+Object.assign(window.TRANSLATIONS.en,{venueCountry:'Austria',directionsLink:'Directions & navigation'});
