@@ -1,5 +1,11 @@
 'use strict';
 const config = window.TOURNAMENT;
+// A normal visit starts at the hero; explicit section links keep their destination.
+if (!location.hash || location.hash === '#') {
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  window.addEventListener('pageshow', () => window.scrollTo({top:0,left:0,behavior:'instant'}));
+}
+const galleryPhotos = config.photos.concat(config.galleryPhotos || []);
 const menu = document.querySelector('.menu');
 const nav = document.querySelector('#navigation');
 const trophy = '<svg viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 8h18v13a9 9 0 0 1-18 0V8Zm9 22v10m-8 0h16M15 12H8v5a9 9 0 0 0 9 9m16-14h7v5a9 9 0 0 1-9 9"/></svg>';
@@ -56,8 +62,10 @@ const langNow=()=>document.documentElement.lang;
 const labels=()=>window.TRANSLATIONS[langNow()];
 config.photos.forEach((photo,index)=>{
   const dot=document.createElement('button');dot.type='button';dot.addEventListener('click',()=>showPhoto(index));dots.append(dot);
+});
+galleryPhotos.forEach((photo,index)=>{
   const button=document.createElement('button');button.type='button';button.className='gallery-item';
-  const img=document.createElement('img');img.src=photo.src;img.width=2048;img.height=1365;img.loading='lazy';button.append(img);
+  const img=document.createElement('img');img.src=photo.src;img.width=photo.width||2048;img.height=photo.height||1365;img.decoding='async';img.loading='lazy';button.append(img);
   button.addEventListener('click',()=>{
     openedFrom=button;const large=document.querySelector('#large-photo');large.src=photo.src;large.alt=photo[langNow()];
     document.querySelector('#large-caption').textContent=photo[langNow()];dialog.dataset.photo=index;dialog.showModal();updatePlayback();
@@ -72,9 +80,11 @@ function refreshPhotoLabels(lang){
   config.photos.forEach((photo,i)=>{
     slides[i].alt=photo[lang];
     dots.children[i].setAttribute('aria-label',t.showPhoto+' '+(i+1));
+  });
+  galleryPhotos.forEach((photo,i)=>{
     const button=document.querySelector('#gallery-grid').children[i];button.setAttribute('aria-label',t.enlargePhoto+': '+photo[lang]);button.querySelector('img').alt=photo[lang];
   });
-  if(dialog.open){const photo=config.photos[Number(dialog.dataset.photo)];document.querySelector('#large-photo').alt=photo[lang];document.querySelector('#large-caption').textContent=photo[lang];}
+  if(dialog.open){const photo=galleryPhotos[Number(dialog.dataset.photo)];document.querySelector('#large-photo').alt=photo[lang];document.querySelector('#large-caption').textContent=photo[lang];}
   pauseButton.textContent=requestedPlay?t.pausePhotos:t.playPhotos;
   pauseButton.setAttribute('aria-pressed',String(!requestedPlay));
 }

@@ -57,3 +57,15 @@ Object.assign(window.TRANSLATIONS.en,{followTitle:'Follow the Sharks',socialWebs
 
 Object.assign(window.TRANSLATIONS.de,{venueCountry:'Österreich',directionsLink:'Anreise & Navigation'});
 Object.assign(window.TRANSLATIONS.en,{venueCountry:'Austria',directionsLink:'Directions & navigation'});
+
+// Zusätzliche Rückblicke gehören ausschließlich zur Galerie, nicht zur Start-Fotoshow.
+window.TOURNAMENT.galleryPhotos = [
+{src:'assets/turnier-2024-45.jpg',width:2048,height:1364,de:'Siegerehrung mit Pokal und Haie-Maskottchen beim U9-Turnier',en:'U9 tournament trophy presentation with the Sharks mascot'},
+{src:'assets/turnier-2024-25.jpg',width:2048,height:1206,de:'Die Mannschaften versammeln sich gemeinsam auf dem Eis der TIWAG Arena',en:'Teams gather together on the ice at the TIWAG Arena'},
+{src:'assets/turnier-2024-12.jpg',width:1709,height:2048,de:'Zwei Nachwuchsspieler im Zweikampf auf dem Eis',en:'Two youth players contest the puck on the ice'},
+{src:'assets/turnier-2024-09.jpg',width:1664,height:2048,de:'Spielszene mit Nachwuchsspielern in roten und blauen Trikots',en:'Youth hockey action with players in red and blue jerseys'},
+{src:'assets/turnier-2024-05.jpg',width:1802,height:2048,de:'Dynamische Spielszene beim internationalen U9-Turnier',en:'Fast-paced action at the international U9 tournament'},
+{src:'assets/turnier-2024-01.jpg',width:1626,height:2048,de:'Die jungen Haie im Spiel um den Puck',en:'Young Sharks competing for the puck'}
+];
+Object.assign(window.TRANSLATIONS.de,{contactTitle:'Kontakt',phoneLabel:'Tel.'});
+Object.assign(window.TRANSLATIONS.en,{contactTitle:'Contact',phoneLabel:'Phone'});
