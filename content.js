@@ -12,10 +12,10 @@ window.TOURNAMENT = {
     tournify: 'https://tournifyapp.com/live/u9-int-tiwag-haieturnier-2026' // Vorläufiger Demonstrationslink; später durch den echten Link für 2027 ersetzen.
   },
   winners: [
-    {year: 2023, name: 'HC TIWAG Innsbruck', logo: 'assets/winner-innsbruck.png'},
-    {year: 2024, name: 'SC Rheintal Future', logo: 'assets/winner-rheintal.png'},
-    {year: 2025, name: 'USG Zoldo', logo: 'assets/winner-zoldo.png'},
-    {year: 2026, name: 'HC TIWAG Innsbruck', logo: 'assets/winner-innsbruck.png'},
+    {year: 2023, name: 'HC TIWAG Innsbruck', logo: 'assets/club-mark.webp'},
+    {year: 2024, name: 'SC Rheintal Future', logo: 'assets/winner-rheintal-web.webp'},
+    {year: 2025, name: 'USG Zoldo', logo: 'assets/winner-zoldo-web.webp'},
+    {year: 2026, name: 'HC TIWAG Innsbruck', logo: 'assets/club-mark.webp'},
     {year: 2027, name: null, logo: null, upcoming: true}
   ]
 };
@@ -69,3 +69,8 @@ window.TOURNAMENT.galleryPhotos = [
 ];
 Object.assign(window.TRANSLATIONS.de,{contactTitle:'Kontakt',phoneLabel:'Tel.'});
 Object.assign(window.TRANSLATIONS.en,{contactTitle:'Contact',phoneLabel:'Phone'});
+
+// Lightweight gallery previews; original files remain available in the lightbox.
+window.TOURNAMENT.photos.concat(window.TOURNAMENT.galleryPhotos || []).forEach(photo=>{
+  photo.thumbnail=photo.src.replace(/\.jpg$/, '-thumb.webp');
+});

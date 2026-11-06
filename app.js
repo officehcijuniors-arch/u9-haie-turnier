@@ -1,10 +1,5 @@
 'use strict';
 const config = window.TOURNAMENT;
-// A normal visit starts at the hero; explicit section links keep their destination.
-if (!location.hash || location.hash === '#') {
-  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-  window.addEventListener('pageshow', () => window.scrollTo({top:0,left:0,behavior:'instant'}));
-}
 const galleryPhotos = config.photos.concat(config.galleryPhotos || []);
 const menu = document.querySelector('.menu');
 const nav = document.querySelector('#navigation');
@@ -37,7 +32,7 @@ function setLanguage(lang){
     const card=document.createElement('article');card.className='fame-card'+(w.upcoming?' upcoming':'')+(w.logo?' has-logo':'');
     const year=document.createElement('div');year.className='fame-year';year.textContent=w.year;
     const visual=document.createElement('div');visual.className='trophy';
-    if(w.logo){const img=document.createElement('img');img.src=w.logo;img.alt=w.name||t.winner;visual.append(img);}else{visual.innerHTML=trophy;}
+    if(w.logo){const img=document.createElement('img');img.src=w.logo;img.loading='lazy';img.decoding='async';img.width=280;img.height=320;img.alt=w.name||t.winner;visual.append(img);}else{visual.innerHTML=trophy;}
     const label=document.createElement('span');label.className='winner-label';label.textContent=w.name?t.winner:w.upcoming?'2027':t.winner;
     const name=document.createElement('h3');name.textContent=w.name||(w.upcoming?t.upcoming:t.pending);
     card.append(year,visual,label,name);grid.append(card);
@@ -65,7 +60,7 @@ config.photos.forEach((photo,index)=>{
 });
 galleryPhotos.forEach((photo,index)=>{
   const button=document.createElement('button');button.type='button';button.className='gallery-item';
-  const img=document.createElement('img');img.src=photo.src;img.width=photo.width||2048;img.height=photo.height||1365;img.decoding='async';img.loading='lazy';button.append(img);
+  const img=document.createElement('img');img.src=photo.thumbnail||photo.src;img.width=photo.width||2048;img.height=photo.height||1365;img.decoding='async';img.loading='lazy';button.append(img);
   button.addEventListener('click',()=>{
     openedFrom=button;const large=document.querySelector('#large-photo');large.src=photo.src;large.alt=photo[langNow()];
     document.querySelector('#large-caption').textContent=photo[langNow()];dialog.dataset.photo=index;dialog.showModal();updatePlayback();
@@ -95,8 +90,21 @@ function updatePlayback(){
   document.querySelector('.site-backdrop').classList.toggle('paused',!playing);
   if(playing)photoTimer=setTimeout(()=>showPhoto(activePhoto+1),10000);
 }
-function showPhoto(index){
-  activePhoto=(index+slides.length)%slides.length;
+let photoRequest=0;
+async function ensurePhoto(index){
+  const slide=slides[index],src=slide.dataset.bg;
+  if(!src)return;
+  const picture=new Image();picture.src=src;
+  try{await picture.decode();}catch{return;}
+  slide.style.backgroundImage='url("'+src+'")';
+  delete slide.dataset.bg;
+}
+async function showPhoto(index){
+  const request=++photoRequest;
+  const next=(index+slides.length)%slides.length;
+  await ensurePhoto(next);
+  if(request!==photoRequest)return;
+  activePhoto=next;
   slides.forEach((slide,i)=>{slide.classList.toggle('is-active',i===activePhoto);slide.setAttribute('aria-hidden',String(i!==activePhoto));dots.children[i].setAttribute('aria-current',String(i===activePhoto));});
   document.querySelector('#photo-count').textContent=String(activePhoto+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');updatePlayback();
 }
@@ -121,9 +129,16 @@ if('IntersectionObserver' in window){
 setLanguage(initial);showPhoto(0);
 // Cosmetic 3D response; no information depends on pointer movement.
 const fameGrid = document.querySelector('#fame-grid');
-function resetFameTilt(){fameGrid.querySelectorAll('.fame-card').forEach(card=>{card.style.removeProperty('--tilt-x');card.style.removeProperty('--tilt-y');card.style.removeProperty('--glare-x');card.style.removeProperty('--glare-y');});}
+function resetFameTilt(){if(fameFrame!==null){cancelAnimationFrame(fameFrame);fameFrame=null;}latestFamePointer=null;fameGrid.querySelectorAll('.fame-card').forEach(card=>{card.style.removeProperty('--tilt-x');card.style.removeProperty('--tilt-y');card.style.removeProperty('--glare-x');card.style.removeProperty('--glare-y');});}
+let fameFrame=null,latestFamePointer=null;
 fameGrid.addEventListener('pointermove',event=>{
   if(motion.matches||event.pointerType!=='mouse')return;
+  latestFamePointer={target:event.target,clientX:event.clientX,clientY:event.clientY};
+  if(fameFrame!==null)return;
+  fameFrame=requestAnimationFrame(()=>{
+  fameFrame=null;
+  const event=latestFamePointer;
+  if(!event)return;
   const card=event.target.closest('.fame-card');if(!card||!fameGrid.contains(card))return;
   const rect=card.getBoundingClientRect();
   const x=Math.min(1,Math.max(0,(event.clientX-rect.left)/rect.width));
@@ -132,6 +147,7 @@ fameGrid.addEventListener('pointermove',event=>{
   card.style.setProperty('--tilt-y',((x-.5)*14).toFixed(2)+'deg');
   card.style.setProperty('--glare-x',(x*100).toFixed(1)+'%');
   card.style.setProperty('--glare-y',(y*100).toFixed(1)+'%');
+  });
 });
 fameGrid.addEventListener('pointerout',event=>{const card=event.target.closest('.fame-card');if(card&&!card.contains(event.relatedTarget)){card.style.removeProperty('--tilt-x');card.style.removeProperty('--tilt-y');card.style.removeProperty('--glare-x');card.style.removeProperty('--glare-y');}});
 fameGrid.addEventListener('pointerleave',resetFameTilt);
