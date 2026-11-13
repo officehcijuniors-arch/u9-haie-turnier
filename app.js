@@ -45,19 +45,12 @@ document.querySelectorAll('[data-lang]').forEach(button=>button.addEventListener
 let initial='de';try{initial=localStorage.getItem('haie-language')||'de';}catch{}
 
 
-// Photo carousel: timer is stopped while paused, unfocused, hidden or off screen.
+// Automatic photo carousel pauses for reduced motion, hidden tabs and the gallery.
 const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
-const stage = document.querySelector('.background-controls');
 const slides = [...document.querySelectorAll('.hero-photo')];
-const dots = document.querySelector('#photo-dots');
-const pauseButton = document.querySelector('#photo-pause');
 const dialog = document.querySelector('#photo-dialog');
-let activePhoto=0, photoTimer=null, requestedPlay=!motion.matches, hovering=false, focusing=false, inView=true, openedFrom=null;
+let activePhoto=0, photoTimer=null, requestedPlay=!motion.matches, inView=true, openedFrom=null;
 const langNow=()=>document.documentElement.lang;
-const labels=()=>window.TRANSLATIONS[langNow()];
-config.photos.forEach((photo,index)=>{
-  const dot=document.createElement('button');dot.type='button';dot.addEventListener('click',()=>showPhoto(index));dots.append(dot);
-});
 galleryPhotos.forEach((photo,index)=>{
   const button=document.createElement('button');button.type='button';button.className='gallery-item';
   const img=document.createElement('img');img.src=photo.thumbnail||photo.src;img.width=photo.width||2048;img.height=photo.height||1365;img.decoding='async';img.loading='lazy';button.append(img);
@@ -68,25 +61,15 @@ galleryPhotos.forEach((photo,index)=>{
 });
 function refreshPhotoLabels(lang){
   const t=window.TRANSLATIONS[lang];
-  stage.setAttribute('aria-label',t.photoRegion);
-  document.querySelector('#photo-prev').setAttribute('aria-label',t.previousPhoto);
-  document.querySelector('#photo-next').setAttribute('aria-label',t.nextPhoto);
   dialog.setAttribute('aria-label',t.photoRegion);
-  config.photos.forEach((photo,i)=>{
-    slides[i].alt=photo[lang];
-    dots.children[i].setAttribute('aria-label',t.showPhoto+' '+(i+1));
-  });
   galleryPhotos.forEach((photo,i)=>{
     const button=document.querySelector('#gallery-grid').children[i];button.setAttribute('aria-label',t.enlargePhoto+': '+photo[lang]);button.querySelector('img').alt=photo[lang];
   });
   if(dialog.open){const photo=galleryPhotos[Number(dialog.dataset.photo)];document.querySelector('#large-photo').alt=photo[lang];document.querySelector('#large-caption').textContent=photo[lang];}
-  pauseButton.textContent=requestedPlay?t.pausePhotos:t.playPhotos;
-  pauseButton.setAttribute('aria-pressed',String(!requestedPlay));
 }
 function updatePlayback(){
   clearTimeout(photoTimer);photoTimer=null;
-  const playing=requestedPlay&&!hovering&&!focusing&&!document.hidden&&inView&&!dialog.open;
-  stage.classList.toggle('paused',!playing);
+  const playing=requestedPlay&&!document.hidden&&inView&&!dialog.open;
   document.querySelector('.site-backdrop').classList.toggle('paused',!playing);
   if(playing)photoTimer=setTimeout(()=>showPhoto(activePhoto+1),10000);
 }
@@ -105,19 +88,11 @@ async function showPhoto(index){
   await ensurePhoto(next);
   if(request!==photoRequest)return;
   activePhoto=next;
-  slides.forEach((slide,i)=>{slide.classList.toggle('is-active',i===activePhoto);slide.setAttribute('aria-hidden',String(i!==activePhoto));dots.children[i].setAttribute('aria-current',String(i===activePhoto));});
-  document.querySelector('#photo-count').textContent=String(activePhoto+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');updatePlayback();
+  slides.forEach((slide,i)=>{slide.classList.toggle('is-active',i===activePhoto);slide.setAttribute('aria-hidden',String(i!==activePhoto));});
+  updatePlayback();
 }
-function togglePlayback(){requestedPlay=!requestedPlay;refreshPhotoLabels(langNow());updatePlayback();}
-pauseButton.addEventListener('click',togglePlayback);
-document.querySelector('#photo-prev').addEventListener('click',()=>showPhoto(activePhoto-1));
-document.querySelector('#photo-next').addEventListener('click',()=>showPhoto(activePhoto+1));
-stage.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'){hovering=true;updatePlayback();}});
-stage.addEventListener('pointerleave',()=>{hovering=false;updatePlayback();});
-stage.addEventListener('focusin',()=>{focusing=true;updatePlayback();});
-stage.addEventListener('focusout',e=>{if(!stage.contains(e.relatedTarget)){focusing=false;updatePlayback();}});
 document.addEventListener('visibilitychange',updatePlayback);
-motion.addEventListener('change',e=>{if(e.matches)requestedPlay=false;refreshPhotoLabels(langNow());updatePlayback();});
+motion.addEventListener('change',e=>{requestedPlay=!e.matches;updatePlayback();});
 document.querySelector('#photo-close').addEventListener('click',()=>dialog.close());
 dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();}});
 dialog.addEventListener('close',()=>{if(openedFrom)openedFrom.focus();updatePlayback();});
