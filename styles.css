@@ -81,3 +81,5 @@ body{background:#073b86}.header{background:#073b86;border-top:7px solid var(--re
 /* Avoid repeated full-screen paint effects; keep the crossfade and 3D cards. */
 .hero-foot,.background-controls{backdrop-filter:none}.site-backdrop .hero-photo.is-active{animation:none;transform:none}.site-backdrop .hero-photo{transition:opacity 1.3s ease}.hero .background-controls{background:#14214cde}.hero-foot{background:#101b40b5}
 @media(hover:none),(pointer:coarse){.fame-card{transform:none;transform-style:flat}.fame-card .trophy,.fame-card h3,.fame-card .fame-year,.fame-card .winner-label{transform:none}}
+
+.hero-details .hero-venue{text-align:center}
